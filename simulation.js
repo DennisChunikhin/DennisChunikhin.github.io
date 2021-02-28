@@ -108,14 +108,14 @@ function makeScene() {
 	);
 	camera.position.z = 10;
 
-	/*const loader = new THREE.TextureLoader();
+	const loader = new THREE.TextureLoader();
     const texture = loader.load(
       'img/space_background.jpg',
       () => {
         const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
         rt.fromEquirectangularTexture(renderer, texture);
         scene.background = rt;
-      });*/
+      });
 
 	renderer = new THREE.WebGLRenderer({ antialias: true });
 	renderer.setClearColor("#e5e5e5");

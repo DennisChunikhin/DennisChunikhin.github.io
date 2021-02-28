@@ -4,6 +4,12 @@ a {
 a:hover {
 	text-decoration: none !important;
 }
+input {
+	background-color: #2e353d;
+	color: white;
+	border: none;
+	border-radius:5px;
+}
 .nav-side-menu {
 	overflow: auto;
 	font-family: verdana;

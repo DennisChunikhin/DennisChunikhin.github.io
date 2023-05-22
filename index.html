@@ -10,18 +10,18 @@
 		}
 		
 		body {
-			background-color: ghostwhite; /* Maybe make the background look like a schematic */
+			background-color: ghostwhite;
 			background-image: url('images/background.jpg');
 			background-attachment: fixed;
 			background-size: 50%;
 			
 			font-family: sketchBook;
-			font-size:7em;
+			font-size: 5vw;
 		}
 	
 		img {
 			position:absolute;
-			top:30%;
+			top:30vh;
 			bottom:0;
 			left:0;
 			right:0;
@@ -30,12 +30,13 @@
 		
 		.label {
 			position:absolute;
-			top:26%;
+			top:30vh;
 			bottom:0;
 			left:0;
 			right:0;
 			margin:auto;
 			color:dimgray;
+			font-size:4vw;
 		}
 		
 		.zoom:hover {
@@ -45,22 +46,24 @@
 	</head>
 	
 	<body>
-		<p><center>Stochastic Computers<center></p>
-		<div id="main">
-			<p class="label" style="right:58%;">Input</p>
-			<p class="label">Computation</p>
-			<p class="label" style="left:56%;">Output</p>
-		
-			<a href="animations/intro.html"><img src="images/keyboard.png", width="22%" style="right:53%;" class="zoom" /></a>
+		<center>
+			<p style="margin-top:10vh;">Stochastic Computers</p>
+			<div id="main">
+				<p class="label" style="right:58%;">Input</p>
+				<p class="label">Computation</p>
+				<p class="label" style="left:56%;">Output</p>
 			
-			<img src="images/processor.png", id="processor", width="35%" style="left:0; right:0;" />
-			<a href="animations/Adder.html"><img src="images/plus.png", id="+", width="5%" style="right:4%" class="zoom" /></a>
-			<a href="animations/andmultiplier.html"><img src="images/times.png", id="x", width="5%" style="right:4%" class="zoom" /></a>
-			<img src="images/minus.png", id="-", width="5%" style="right:-6%"  />
-			<img src="images/divide.png", id="divide", width="5%" style="right:-6%" />
-			
-			<a href="animations/BinomialDist.html"><img src="images/monitor.png", width="18%" style="left:55%;" class="zoom" /></a>
-		</div>
+				<a href="animations/intro.html"><img src="images/keyboard.png", width="22%" style="right:53%;" class="zoom" /></a>
+				
+				<img src="images/processor.png", id="processor", width="35%" style="left:0; right:0;" />
+				<a href="animations/Adder.html"><img src="images/plus.png", id="+", width="5%" style="right:4%" class="zoom" /></a>
+				<a href="animations/andmultiplier.html"><img src="images/times.png", id="x", width="5%" style="right:4%" class="zoom" /></a>
+				<img src="images/minus.png", id="-", width="5%" style="right:-6%"  />
+				<img src="images/divide.png", id="divide", width="5%" style="right:-6%" />
+				
+				<a href="animations/BinomialDist.html"><img src="images/monitor.png", width="18%" style="left:55%;" class="zoom" /></a>
+			</div>
+		</center>
 		
 		<script>
 		var processor = document.getElementById("processor");
@@ -70,8 +73,6 @@
 		var times = document.getElementById("x");
 		var divide = document.getElementById("divide");
 		
-		var labels = document.getElementsByClassName("label");
-		
 		function pos_processor_elements(e) {
 			plus.style.bottom = 0.25*processor.height + "px";
 			minus.style.bottom = 0.25*processor.height + "px";
@@ -79,18 +80,8 @@
 			divide.style.bottom = -0.15*processor.height + "px";
 		}
 		
-		function label_font_size(e) {
-			for (let i=0; i<labels.length; i++) {
-				labels[i].style.fontSize = window.innerWidth/25 + "px";
-			}
-		}
-		
-		window.onload = label_font_size;
 		processor.onload = pos_processor_elements;
-		window.onresize = function (e) {
-			pos_processor_elements(e);
-			label_font_size(e);
-		}
+		window.onresize = pos_processor_elements;
 		</script>
 	</body>
 </html> 

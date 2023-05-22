@@ -1,123 +1,96 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
-<head>
-	<title>Orbit Lab</title>
-	<link rel="stylesheet" href="style.css">
+	<head>
+		<title>Stochastic Computer</title>
+		
+		<style>
+		@font-face {
+			font-family: sketchBook;
+			src: url(fonts/SketchBook-B5pB.ttf);
+		}
+		
+		body {
+			background-color: ghostwhite; /* Maybe make the background look like a schematic */
+			background-image: url('images/background.jpg');
+			background-attachment: fixed;
+			background-size: 50%;
+			
+			font-family: sketchBook;
+			font-size:7em;
+		}
 	
-	<script src="js/three.min.js"></script>
-	<script src="js/OrbitControls.js"></script>
+		img {
+			position:absolute;
+			top:30%;
+			bottom:0;
+			left:0;
+			right:0;
+			margin:auto;
+		}
+		
+		.label {
+			position:absolute;
+			top:26%;
+			bottom:0;
+			left:0;
+			right:0;
+			margin:auto;
+			color:dimgray;
+		}
+		
+		.zoom:hover {
+			transform: scale(1.2);
+		}
+		</style>
+	</head>
 	
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-
-  	<script src="https://kit.fontawesome.com/f71a594843.js" crossorigin="anonymous"></script>
-	
-	<link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway&display=swap">
-	
-	<link rel="icon" type="image/png" href="img/favicon.ico">
-</head>
-<body>
-
-	<div class="text-box">
-		<div class="heading text-center">Orbit Lab</div>
-		<div class="heading text-center">Explore the unknown</div>
-		<div class="button-wrapper">
-			<a onmouseover="speed()" onmouseout="slow()" class="button" href="simulation.html">Launch Simulation</a>
+	<body>
+		<p><center>Stochastic Computers<center></p>
+		<div id="main">
+			<p class="label" style="right:58%;">Input</p>
+			<p class="label">Computation</p>
+			<p class="label" style="left:56%;">Output</p>
+		
+			<a href="animations/Intro.html"><img src="images/keyboard.png", width="22%" style="right:53%;" class="zoom" /></a>
+			
+			<img src="images/processor.png", id="processor", width="35%" style="left:0; right:0;" />
+			<a href="animations/Adder.html"><img src="images/plus.png", id="+", width="5%" style="right:4%" class="zoom" /></a>
+			<a href="animations/ANDMultiplier.html"><img src="images/times.png", id="x", width="5%" style="right:4%" class="zoom" /></a>
+			<img src="images/minus.png", id="-", width="5%" style="right:-6%"  />
+			<img src="images/divide.png", id="divide", width="5%" style="right:-6%" />
+			
+			<a href="animations/BinomialDist.html"><img src="images/monitor.png", width="18%" style="left:55%;" class="zoom" /></a>
 		</div>
-	</div>
-
-	<script>
-		let scene, camera, renderer, starGeo, stars, v_init=0, changeSpeed, y_back=200, spinRate = 0.002;
 		
-		function init() {
-			scene = new THREE.Scene();
-			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
-			camera.position.z = 1;
-			camera.rotation.x = Math.PI/2;
-			
-			renderer = new THREE.WebGLRenderer();
-			renderer.setSize(window.innerWidth, window.innerHeight);
-			document.body.appendChild(renderer.domElement);
-			
-			starGeo = new THREE.Geometry();
-			for (let i = 0; i < 6000; i++) {
-				star = new THREE.Vector3(
-					Math.random() * 600 - 300,
-					Math.random() * 600 - 300,
-					Math.random() * 600 - 300,
-				);
-				star.velocity = 0;
-				star.acceleration = 0.02;
-				starGeo.vertices.push(star);
+		<script>
+		var processor = document.getElementById("processor");
+		
+		var plus = document.getElementById("+");
+		var minus = document.getElementById("-");
+		var times = document.getElementById("x");
+		var divide = document.getElementById("divide");
+		
+		var labels = document.getElementsByClassName("label");
+		
+		function pos_processor_elements(e) {
+			plus.style.bottom = 0.25*processor.height + "px";
+			minus.style.bottom = 0.25*processor.height + "px";
+			times.style.bottom = -0.15*processor.height + "px";
+			divide.style.bottom = -0.15*processor.height + "px";
+		}
+		
+		function label_font_size(e) {
+			for (let i=0; i<labels.length; i++) {
+				labels[i].style.fontSize = window.innerWidth/25 + "px";
 			}
-			let sprite = new THREE.TextureLoader().load('data:image/png;base64,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'); //img/star.jpg
-			let starMat = new THREE.PointsMaterial({
-				color: 0xaaaaaa,
-				size: 0.7,
-				map: sprite
-			});
-			
-			stars = new THREE.Points(starGeo, starMat);
-			scene.add(stars);
-			animate();
-		}
-		function animate() {
-			if (v_init <= 0) {
-				window.clearInterval(changeSpeed);
-				v_init = 0;
-				spinRate = 0.002;
-			}
-			else if (v_init >= 6) {
-				window.clearInterval(changeSpeed);
-				v_init = 6;
-				spinRate = 0.004;
-			}
-		
-			starGeo.vertices.forEach(p=>{
-				p.velocity += p.acceleration;
-				p.y -= p.velocity;
-				if(p.y < -200) {
-					p.y = y_back;
-					p.velocity = v_init;
-				}
-			});
-			starGeo.verticesNeedUpdate = true;
-			stars.rotation.y += spinRate;
-			renderer.render(scene, camera);
-			requestAnimationFrame(animate);
-		}
-		init();
-		
-		function speed() {
-			window.clearInterval(changeSpeed);
-			v_init += 0.1;
-			y_back = 300;
-			spinRate = 0.004;
-			changeSpeed = window.setInterval(increaseSpeed, 1);
-		}
-		function slow() {
-			window.clearInterval(changeSpeed);
-			v_init -= 0.1;
-			y_back = 200;
-			changeSpeed = window.setInterval(decreaseSpeed, 1);
-		}
-		function increaseSpeed() {
-			v_init += 0.2;
-			spinRate += 0.00002;
-		}
-		function decreaseSpeed() {
-			v_init -= 0.1;
-			spinRate -= 0.00004;
 		}
 		
-		//Resize window
-		window.addEventListener('resize', function() {
-			renderer.setSize(window.innerWidth, window.innerHeight);
-			camera.aspect = window.innerWidth / window.innerHeight;
-			camera.updateProjectionMatrix();
-		});
-	</script>
-
-</body>
-</html>
+		window.onload = label_font_size;
+		processor.onload = pos_processor_elements;
+		window.onresize = function (e) {
+			pos_processor_elements(e);
+			label_font_size(e);
+		}
+		</script>
+	</body>
+</html> 
